@@ -39,3 +39,8 @@ class OrderfixView(generic.TemplateView):
         print(drink_id, drink_count)
         return redirect('orderfix')
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context["id"] = self.kwargsdrink_id
+        return context
+
