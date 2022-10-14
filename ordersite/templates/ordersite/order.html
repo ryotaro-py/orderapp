@@ -1,0 +1,15 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{% block content %}
+<form method="post" action="{% url 'orderfix'%}">
+{% csrf_token %}
+    {% for drink in drinks %}
+        <div>{{drink.name}}        
+            <input type="hidden" value="{{drink.id}}" name="drink_id">
+            <input type="number" value="" name="drink_count">
+        </div>
+    {% endfor %}
+    <button type="submit">確定</button>
+</form>
+{% endblock %}
