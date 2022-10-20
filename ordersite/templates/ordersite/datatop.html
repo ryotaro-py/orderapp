@@ -1,0 +1,9 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{% block content %}
+<div>
+    <a href="{% url 'dataamount' %}">個別</a>   
+    <a href="{% url 'dataprice' %}">金額</a>
+</div>
+{% endblock %}

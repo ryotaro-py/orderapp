@@ -2,8 +2,8 @@
 {% load static %}
 {% block content %}
 <div>
-    <a href="order">発注</a>
-    <a href="">集計データ</a>
+    <a href="{% url 'order' %}">発注</a>
+    <a href="{% url 'data' %}">集計データ</a>
     <a href="">今日の発注</a>
     <a href="">マスター登録</a>
 </div>

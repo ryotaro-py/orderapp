@@ -12,6 +12,7 @@ class Detail(models.Model):
     name = models.ForeignKey(Drink, on_delete=models.CASCADE)
     count = models.IntegerField(default=0)
     price = models.IntegerField(default=0)
+    data_datetime = models.DateTimeField(default=datetime.now)
     created_at = models.DateTimeField(default=datetime.now)
     updated_at = models.DateTimeField(auto_now=True)
 
