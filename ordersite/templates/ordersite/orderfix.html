@@ -3,7 +3,7 @@
 
 {% block content %}
 {% for i in order_list %}
-    {{i.0.name}} {{i.1}}
+    {{i.0}} {{i.1}}
 {% endfor %}
-<button><a href="{% url 'toppage' %}">トップページに戻る</a></button>
+注文を確定しました。
 {% endblock %}

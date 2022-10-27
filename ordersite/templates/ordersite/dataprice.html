@@ -2,5 +2,27 @@
 {% load static %}
 
 {% block content %}
+<h1>個別データ</h1>
+<table>
+    <tr>
+        <th>品目</th>
+    </tr>
+    <tr>    
+        {% for drink in object_list %}
+            <tr><th><a href="{% url 'datapricedetail' drink.id %}">{{drink.name}}</a></th></tr>
+        {% empty %}
+            <td>No articles yet.</td>
+        {% endfor %}
+    </tr>
+</table>
+
+{% if page_obj.has_previous %}
+    <h2><a href="?page={{ page_obj.previous_page_number }}">前へ</a></h2>
+{% endif %}
+{% if page_obj.has_next %}
+    <h2><a href="?page={{ page_obj.paginator.num_pages}}">次へ</a></h2>
+{% endif %}    
+
+<h2><a href="{% url 'data' %}">前のページに戻る</a></h2>
 
 {% endblock %}

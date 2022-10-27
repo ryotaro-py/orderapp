@@ -2,5 +2,7 @@
 {% load static %}
 
 {% block content %}
-
+<h1>{{drink.name}}</h1>
+<img src="data:img/png;base64, {{chart|safe}}">
+<h2><a href="{% url 'dataprice' %}">drink選択に戻る</a></h2>
 {% endblock %}

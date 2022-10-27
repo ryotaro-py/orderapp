@@ -2,5 +2,18 @@
 {% load static %}
 
 {% block content %}
-a
+<ul>
+    {% for drink in object_list %}
+    <li><a href="{% url 'dataamountdetail' drink.id %}">{{drink.name}}</a></li>
+    {% empty %}
+        <li>No articles yet.</li>
+    {% endfor %}
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+    {% endif %}
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.paginator.num_pages}}">次へ</a>
+    {% endif %}    
+</ul>
+<h2><a href="{% url 'data' %}">選択画面に戻る</a></h2>
 {% endblock %}

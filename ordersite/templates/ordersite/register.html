@@ -1,0 +1,12 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>Drink登録</h1>
+<form method="post">
+    {% csrf_token %}
+    {{form.as_p}}
+    <input type="hidden" value="{{drink_id}}" name="drink_id">
+    <button>確定</button>
+</form>
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{% block content %}
+<h1>{{drink}}の値段設定</h1>
+<form method="post">
+    {% csrf_token %}
+    <p>{{form.as_p}}円</p>
+    <button>確定</button>
+</form>
+{% endblock %}

@@ -1,12 +1,10 @@
-from multiprocessing import context
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.views import generic
-from django.http import HttpResponse
 from .models import Drink, Detail
-import datetime
-import io
-import matplotlib.pyplot as plt
-import numpy as np
+from .forms import DrinkForm, DetailForm
+from .graph import plot_graph
+from datetime import datetime
+
 
 
 class ToppageView(generic.TemplateView):
@@ -28,31 +26,21 @@ class OrderfixView(generic.TemplateView):
         drink_id_list = self.request.POST.getlist('drink_id')
         drink_count_list = self.request.POST.getlist('drink_count')
         drink_amount = Drink.objects.all().count()
-        print(drink_id_list, drink_count_list)
-        print(drink_amount)
         if len(drink_id_list)==len(drink_count_list)==drink_amount:
             i = 0
             for drink_id in drink_id_list:
                 drink = Drink.objects.get(id=drink_id)
-                drink_name = Detail.objects.get(name=drink)
-                print(drink_name)
-                print(type(drink_name.count), type(drink_count_list[0]))
-                drink_name.count += int(drink_count_list[i])
-                print(drink_count_list[i])
+                drink_create = Detail.objects.create(name=drink, count=int(drink_count_list[i]))
                 i += 1
-                print(drink_name.count)
-                drink_name.save()
         return redirect('orderfix')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        details = Detail.objects.all()
+        drinks = Drink.objects.all()
         order_list = []
-        for detail in details:
-            drink = detail.name
-            print(drink, type(drink))
-            order_list.append([drink,detail.count])
-        print(order_list)
+        for drink in drinks:
+            detail = Detail.objects.filter(name=drink).order_by('-created_at').first()
+            order_list.append([drink.name, detail.count])
         context['order_list'] = order_list
         return context
 
@@ -60,17 +48,125 @@ class DataTopView(generic.TemplateView):
     template_name = "ordersite/datatop.html"
 
 class DataAmountView(generic.ListView):
-    tamplate_name = "ordersite/dataamount.html"
+    template_name = "ordersite/dataamount.html"
     model = Drink
-    paginate_by = 20
+    paginate_by = 10
 
 class DataAmountDetailView(generic.TemplateView):
     template_name = "ordersite/dataamountdetail.html"
 
-def setPlt(drink_id):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        drink = Drink.objects.get(id=self.kwargs['drink_id'])
+        drink_amounts = Detail.objects.filter(name=drink).order_by('created_at')
+        counts = drink_amounts.count()
+        month = datetime.now().month
+        #yearが変わる場合はif文で精査する
+        i = 0
+        amounts_list = []
+        while  i <= counts:
+            drink_amount = drink_amounts.filter(created_at__month=month)
+            count = 0
+            for amount in drink_amount:
+                count += amount.count
+            amounts_list.append([month,count])
+            month -= 1
+            i += 1
+        amounts_list.reverse()
+        x = [x[0] for x in amounts_list]
+        y = [y[1] for y in amounts_list]
+        title = 'data'
+        ylabel = 'number of orders'
+        chart = plot_graph(x,y,title,ylabel)
+        context['chart'] = chart
+        context['drink'] = drink
+        print(amounts_list)
+        return context
 
-class DataPriceView(generic.TemplateView):
-    template_name = "ordresite/dataprice.html"
+class DataPriceView(generic.ListView):
+    template_name = "ordersite/dataprice.html"
+    model = Drink
+    paginate_by = 5
 
 class DataPriceDetailView(generic.TemplateView):
     template_name = "ordersite/datapricedetail.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        drink = Drink.objects.get(id=self.kwargs['drink_id'])
+        drink_amounts = Detail.objects.filter(name=drink).order_by('created_at')
+        price = drink_amounts.first().price
+        counts = drink_amounts.count()
+        month = datetime.now().month
+        #yearが変わる場合はif文で精査する
+        i = 0
+        amounts_list = []
+        while  i <= counts:
+            drink_amount = drink_amounts.filter(created_at__month=month)
+            count = 0
+            for amount in drink_amount:
+                count += amount.count
+            amounts_list.append([month,count*price])
+            month -= 1
+            i += 1
+        amounts_list.reverse()
+        x = [x[0] for x in amounts_list]
+        y = [y[1] for y in amounts_list]
+        title = 'price'
+        ylabel = 'total amount'
+        print('!')
+        chart = plot_graph(x,y,title,ylabel)
+        context['chart'] = chart
+        context['drink'] = drink
+        print(amounts_list)
+        return context
+
+class TodayOrderView(generic.TemplateView):
+    template_name = "ordersite/todayorder.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        year = datetime.now().year
+        month = datetime.now().month
+        day = datetime.now().day
+        details = Detail.objects.filter(created_at__year=year).filter(created_at__month=month).filter(created_at__day=day)
+        context['drink'] = details.first().name.name
+        count = 0
+        for detail in details:
+            count += detail.count
+        context['count'] = count
+        return context
+
+class RegisterView(generic.FormView):
+    template_name= "ordersite/register.html"
+    model = Drink
+    form_class = DrinkForm
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['drink_id'] = Drink.objects.all().last().id
+        return context
+
+    def form_valid(self, form):
+        form.save()
+        drink_id = int(self.request.POST['drink_id'])
+        return redirect('registerdetail', pk=drink_id+1)
+
+class RegisterDetailView(generic.FormView):
+    template_name = "ordersite/registerdetail.html"
+    model = Detail
+    form_class = DetailForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['drink'] = Drink.objects.get(id=self.kwargs['pk']).name
+        return context
+
+    def form_valid(self, form):
+        detail = form.save(commit=False)
+        detail.name = Drink.objects.get(id=self.kwargs['pk'])
+        detail.save()
+        return redirect('toppage')
+
+
+
