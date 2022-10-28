@@ -1,5 +1,8 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'css/toppage.css' %}">
+{% endblock %}
 {% block content %}
 <div>
     <a href="{% url 'order' %}">発注</a>
