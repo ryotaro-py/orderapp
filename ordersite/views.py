@@ -130,11 +130,16 @@ class TodayOrderView(generic.TemplateView):
         month = datetime.now().month
         day = datetime.now().day
         details = Detail.objects.filter(created_at__year=year).filter(created_at__month=month).filter(created_at__day=day)
-        context['drink'] = details.first().name.name
         count = 0
-        for detail in details:
-            count += detail.count
-        context['count'] = count
+        today_drink_list = []
+        drinks = Drink.objects.all()
+        for drink in drinks:
+            if details.filter(name=drink).exists():
+                for detail in details.filter(name=drink):
+                    drink = detail.name.name
+                    count += detail.count
+                today_drink_list.append([drink, count])
+        context['list'] = today_drink_list
         return context
 
 class RegisterView(generic.FormView):

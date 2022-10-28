@@ -3,7 +3,13 @@
 
 {% block content %}
 今日の発注は
-{{drink}}
-{{count}}
+<ul>
+{% for l in list %}
+    <li>
+        {{l.0}}
+        {{l.1}}
+    </li>
+{% endfor %}
+</ul>
 です。
 {% endblock %}

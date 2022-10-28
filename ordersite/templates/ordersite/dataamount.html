@@ -2,6 +2,7 @@
 {% load static %}
 
 {% block content %}
+<h1>品目</h1>
 <ul>
     {% for drink in object_list %}
     <li><a href="{% url 'dataamountdetail' drink.id %}">{{drink.name}}</a></li>

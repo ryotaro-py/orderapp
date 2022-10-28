@@ -7,7 +7,7 @@
     {% for drink in drinks %}
         <div>{{drink.name}}        
             <input type="hidden" value="{{drink.id}}" name="drink_id">
-            <input type="number" value="" name="drink_count">
+            <input type="number" value="0" name="drink_count">
         </div>
     {% endfor %}
     <button type="submit">確定</button>
