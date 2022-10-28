@@ -14,6 +14,7 @@ def Output_Graph():
 
 def plot_graph(x, y, title, ylabel):
     plt.bar(x,y)
+    plt.xticks([1,2,3,4,5,6,7,8,9,10,11,12])
     plt.title(title)
     plt.xlabel("month")
     plt.ylabel(ylabel)
