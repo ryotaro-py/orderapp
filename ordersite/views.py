@@ -144,7 +144,6 @@ class TodayOrderView(generic.TemplateView):
 
 class RegisterView(generic.FormView):
     template_name= "ordersite/register.html"
-    model = Drink
     form_class = DrinkForm
     
     def get_context_data(self, **kwargs):
@@ -159,7 +158,6 @@ class RegisterView(generic.FormView):
 
 class RegisterDetailView(generic.FormView):
     template_name = "ordersite/registerdetail.html"
-    model = Detail
     form_class = DetailForm
 
     def get_context_data(self, **kwargs):

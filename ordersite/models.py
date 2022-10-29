@@ -1,5 +1,9 @@
+from email.policy import default
 from django.db import models
 from datetime import datetime
+
+
+
 
 class Drink(models.Model):
     name = models.CharField(max_length=100)
