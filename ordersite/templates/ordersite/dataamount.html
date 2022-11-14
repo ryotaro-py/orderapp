@@ -9,12 +9,14 @@
     {% empty %}
         <li>No articles yet.</li>
     {% endfor %}
+</ul>
+
     {% if page_obj.has_previous %}
-    <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
+        <a href="?page={{ page_obj.previous_page_number }}">前へ</a>
     {% endif %}
     {% if page_obj.has_next %}
-    <a href="?page={{ page_obj.paginator.num_pages}}">次へ</a>
-    {% endif %}    
-</ul>
+        <a href="?page={{ page_obj.paginator.num_pages}}">次へ</a>
+    {% endif %}  
+
 <h2><a href="{% url 'data' %}">選択画面に戻る</a></h2>
 {% endblock %}

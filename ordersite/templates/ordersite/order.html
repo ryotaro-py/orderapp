@@ -12,4 +12,13 @@
     {% endfor %}
     <button type="submit">確定</button>
 </form>
+<div>
+    <h2>予測機能</h2>
+    {% for list in drink_to_order %}
+        {{list.0.name}}
+        前回の注文
+        {{list.1.created_at}}
+        <br>
+    {% endfor %}
+</div>
 {% endblock %}

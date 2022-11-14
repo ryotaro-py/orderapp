@@ -3,7 +3,8 @@ from django.views import generic
 from .models import Drink, Detail
 from .forms import DrinkForm, DetailForm
 from .graph import plot_graph
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
+
 
 
 
@@ -16,7 +17,20 @@ class OrderView(generic.TemplateView):
     def get_context_data(self):
         context = super().get_context_data()
         drinks= Drink.objects.all()
-        context['drinks'] = drinks    
+        context['drinks'] = drinks
+        # 予測機能について
+        JST = timezone(timedelta(hours=9), "JST")
+        drink_to_order_list = []
+        for drink in drinks:
+            drink_amounts = Detail.objects.filter(name=drink).order_by('-created_at')    
+            if drink_amounts.count() >= 2:
+                latest_drink = drink_amounts[0]
+                second_latest_drink = drink_amounts[1]
+                s = latest_drink.created_at - second_latest_drink.created_at
+                t = datetime.now(JST) - latest_drink.created_at
+                if t >= s:
+                    drink_to_order_list.append([drink, latest_drink])
+        context['drink_to_order'] = drink_to_order_list
         return context
 
 class OrderfixView(generic.TemplateView):
@@ -57,11 +71,17 @@ class DataAmountDetailView(generic.TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        #drinkの詳細情報が作成順になって取得
         drink = Drink.objects.get(id=self.kwargs['drink_id'])
-        drink_amounts = Detail.objects.filter(name=drink).order_by('created_at')
+        drink_amounts = Detail.objects.filter(name=drink).order_by('-created_at')
+        
+        #同じ日に2回以上注文していた場合、monthとdrink_amountがずれる
+        #もし、同じ日に二つ以上のデータがはいっているのなら、その分カウントを追加する。
         counts = drink_amounts.count()
         month = datetime.now().month
         #yearが変わる場合はif文で精査する
+        year = datetime.now().year
+
         i = 0
         amounts_list = []
         while  i <= counts:
@@ -114,7 +134,6 @@ class DataPriceDetailView(generic.TemplateView):
         y = [y[1] for y in amounts_list]
         title = 'price'
         ylabel = 'total amount'
-        print('!')
         chart = plot_graph(x,y,title,ylabel)
         context['chart'] = chart
         context['drink'] = drink
@@ -170,6 +189,9 @@ class RegisterDetailView(generic.FormView):
         detail.name = Drink.objects.get(id=self.kwargs['pk'])
         detail.save()
         return redirect('toppage')
+
+
+    
 
 
 

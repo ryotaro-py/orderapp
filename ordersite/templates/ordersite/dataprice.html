@@ -3,18 +3,13 @@
 
 {% block content %}
 <h1>個別データ</h1>
-<table>
-    <tr>
-        <th>品目</th>
-    </tr>
-    <tr>    
-        {% for drink in object_list %}
-            <tr><th><a href="{% url 'datapricedetail' drink.id %}">{{drink.name}}</a></th></tr>
-        {% empty %}
-            <td>No articles yet.</td>
-        {% endfor %}
-    </tr>
-</table>
+<ul>   
+    {% for drink in object_list %}
+        <li><a href="{% url 'datapricedetail' drink.id %}">{{drink.name}}</a></li>
+    {% empty %}
+        <li>No articles yet.</li>
+    {% endfor %}
+</ul>
 
 {% if page_obj.has_previous %}
     <h2><a href="?page={{ page_obj.previous_page_number }}">前へ</a></h2>
