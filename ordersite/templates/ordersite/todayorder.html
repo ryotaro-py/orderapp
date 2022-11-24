@@ -1,12 +1,16 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{%  block extra_style %}
+<link rel="stylesheet" href="{% static 'css/todayorder.css' %}">
+{% endblock %}
+
 {% block content %}
 今日の発注は
 <ul>
 {% for l in list %}
     <li>
-        {{l.0}}
+        {{l.0.name}}
         {{l.1}}
     </li>
 {% endfor %}

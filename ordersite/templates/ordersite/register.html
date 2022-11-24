@@ -8,5 +8,6 @@
     {{form.as_p}}
     <input type="hidden" value="{{drink_id}}" name="drink_id">
     <button>確定</button>
+    <button type="button"><a href="{% url 'delete' %}">削除ページ</a></button>
 </form>
 {% endblock %}

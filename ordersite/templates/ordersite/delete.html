@@ -1,0 +1,21 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{%  block extra_style %}
+<link rel="stylesheet" href="{% static 'css/delete.css' %}">
+{% endblock %}
+
+{% block content %}
+    {% for drink in drinks %}
+    <div>
+        {{drink.name}}
+        <form method="post">
+            {% csrf_token %}
+            <button>削除する<input type="hidden" value="{{drink.id}}" name="drink_id"></button>
+        </form>
+        <br>
+    </div>
+    {% endfor %}
+    <button><a href="{% url 'revival' %}">間違えて、消してしまった場合はこちら</a></button>
+    <button><a href="{% url 'register' %}">前のページに戻る</a></button>
+{% endblock %}

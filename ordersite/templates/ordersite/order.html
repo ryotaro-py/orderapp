@@ -1,19 +1,26 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{%  block extra_style %}
+<link rel="stylesheet" href="{% static 'css/order.css' %}">
+{% endblock %}
+
 {% block content %}
-<form method="post" action="{% url 'orderfix'%}">
-{% csrf_token %}
-    {% for drink in drinks %}
-        <div>{{drink.name}}        
-            <input type="hidden" value="{{drink.id}}" name="drink_id">
-            <input type="number" value="0" name="drink_count">
-        </div>
-    {% endfor %}
-    <button type="submit">確定</button>
-</form>
+<h3>注文画面</h3>
 <div>
-    <h2>予測機能</h2>
+    <form method="post" action="{% url 'orderfix'%}">
+    {% csrf_token %}
+        {% for drink in drinks %}
+            <div>{{drink.name}}        
+                <input type="hidden" value="{{drink.id}}" name="drink_id">
+                <input type="number" value="0" name="drink_count">
+            </div>
+        {% endfor %}
+        <button type="submit">確定</button>
+    </form>
+</div>
+<div>
+    <h2>予測</h2>
     {% for list in drink_to_order %}
         {{list.0.name}}
         前回の注文

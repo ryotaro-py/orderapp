@@ -11,6 +11,8 @@ urlpatterns = [
     path('data/price', views.DataPriceView.as_view(), name='dataprice'),
     path('data/price/<int:drink_id>', views.DataPriceDetailView.as_view(), name='datapricedetail'),
     path('todayorder', views.TodayOrderView.as_view(), name='todayorder'),
-    path('register', views.RegisterView.as_view(), name='register'),
-    path('registerdetail/<int:pk>', views.RegisterDetailView.as_view(), name='registerdetail'),
+    path('register', views.RegisterDeleteView.as_view(), name='register'),
+    path('registerdone', views.RegisterDoneView.as_view(), name='registerdone'),
+    path('delete', views.DeleteView.as_view(), name='delete'),
+    path('revive', views.ReviveView.as_view(), name='revival'),
 ]

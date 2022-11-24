@@ -7,12 +7,6 @@ class DrinkForm(forms.ModelForm):
 
     class Meta:
         model = Drink
-        fields = ("name",)
-        labels ={"name":"名前",}
+        fields = ("name","price",)
+        labels ={"name":"名前", "price":"金額",}
 
-class DetailForm(forms.ModelForm):
-
-    class Meta:
-        model = Detail
-        fields = ("price",)
-        labels = {"price":"値段",}

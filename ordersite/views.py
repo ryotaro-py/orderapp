@@ -1,7 +1,7 @@
 from django.shortcuts import redirect
 from django.views import generic
 from .models import Drink, Detail
-from .forms import DrinkForm, DetailForm
+from .forms import DrinkForm
 from .graph import plot_graph
 from datetime import datetime, timezone, timedelta
 
@@ -11,27 +11,38 @@ from datetime import datetime, timezone, timedelta
 class ToppageView(generic.TemplateView):
     template_name = "ordersite/toppage.html"
 
+    
 class OrderView(generic.TemplateView):
     template_name = "ordersite/order.html"
 
     def get_context_data(self):
         context = super().get_context_data()
-        drinks= Drink.objects.all()
+        # order一覧
+        drinks= Drink.objects.filter(status=True)
         context['drinks'] = drinks
         # 予測機能について
+        weight = 0.5
         JST = timezone(timedelta(hours=9), "JST")
         drink_to_order_list = []
         for drink in drinks:
             drink_amounts = Detail.objects.filter(name=drink).order_by('-created_at')    
             if drink_amounts.count() >= 2:
+                n = 0
+                average = timedelta(0)
+                while n <= drink_amounts.count()-2:
+                    difference = drink_amounts[n].created_at - drink_amounts[n+1].created_at 
+                    average += difference*(weight**n)
+                    n += 1
+                average = (1-weight)*average 
                 latest_drink = drink_amounts[0]
-                second_latest_drink = drink_amounts[1]
-                s = latest_drink.created_at - second_latest_drink.created_at
-                t = datetime.now(JST) - latest_drink.created_at
-                if t >= s:
+                between_today_latest = datetime.now(JST) - latest_drink.created_at
+            
+                if between_today_latest >= average:
                     drink_to_order_list.append([drink, latest_drink])
         context['drink_to_order'] = drink_to_order_list
         return context
+
+
 
 class OrderfixView(generic.TemplateView):
     template_name = "ordersite/orderfix.html"
@@ -58,12 +69,14 @@ class OrderfixView(generic.TemplateView):
         context['order_list'] = order_list
         return context
 
+
+
 class DataTopView(generic.TemplateView):
     template_name = "ordersite/datatop.html"
 
 class DataAmountView(generic.ListView):
     template_name = "ordersite/dataamount.html"
-    model = Drink
+    queryset = Drink.objects.filter(status=True)
     paginate_by = 10
 
 class DataAmountDetailView(generic.TemplateView):
@@ -105,8 +118,8 @@ class DataAmountDetailView(generic.TemplateView):
 
 class DataPriceView(generic.ListView):
     template_name = "ordersite/dataprice.html"
-    model = Drink
-    paginate_by = 5
+    queryset = Drink.objects.filter(status=True)
+    paginate_by = 10
 
 class DataPriceDetailView(generic.TemplateView):
     template_name = "ordersite/datapricedetail.html"
@@ -115,7 +128,7 @@ class DataPriceDetailView(generic.TemplateView):
         context = super().get_context_data(**kwargs)
         drink = Drink.objects.get(id=self.kwargs['drink_id'])
         drink_amounts = Detail.objects.filter(name=drink).order_by('created_at')
-        price = drink_amounts.first().price
+        price = drink.price
         counts = drink_amounts.count()
         month = datetime.now().month
         #yearが変わる場合はif文で精査する
@@ -145,50 +158,77 @@ class TodayOrderView(generic.TemplateView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        year = datetime.now().year
-        month = datetime.now().month
-        day = datetime.now().day
-        details = Detail.objects.filter(created_at__year=year).filter(created_at__month=month).filter(created_at__day=day)
-        count = 0
+        JST = timezone(timedelta(hours=9), "JST")
         today_drink_list = []
         drinks = Drink.objects.all()
+        today = datetime(datetime.now(JST).year, datetime.now(JST).month, datetime.now(JST).day)
         for drink in drinks:
-            if details.filter(name=drink).exists():
-                for detail in details.filter(name=drink):
-                    drink = detail.name.name
+            details = Detail.objects.filter(name=drink, created_at__gte = today)
+            count = 0
+            if details.exists():
+                for detail in details:
                     count += detail.count
-                today_drink_list.append([drink, count])
+                if count != 0:
+                    today_drink_list.append([drink, count])
         context['list'] = today_drink_list
+        print(today_drink_list)
         return context
 
-class RegisterView(generic.FormView):
+class RegisterDeleteView(generic.FormView):
     template_name= "ordersite/register.html"
     form_class = DrinkForm
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['drink_id'] = Drink.objects.all().last().id
+    def get_context_data(self):
+        context = super().get_context_data()
         return context
 
     def form_valid(self, form):
         form.save()
-        drink_id = int(self.request.POST['drink_id'])
-        return redirect('registerdetail', pk=drink_id+1)
+        return redirect('registerdone')
 
-class RegisterDetailView(generic.FormView):
-    template_name = "ordersite/registerdetail.html"
-    form_class = DetailForm
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['drink'] = Drink.objects.get(id=self.kwargs['pk']).name
+class RegisterDoneView(generic.TemplateView):
+    template_name = "ordersite/registerdone.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context['drink'] = Drink.objects.last()
         return context
 
-    def form_valid(self, form):
-        detail = form.save(commit=False)
-        detail.name = Drink.objects.get(id=self.kwargs['pk'])
-        detail.save()
-        return redirect('toppage')
+
+
+class DeleteView(generic.TemplateView):
+    template_name = "ordersite/delete.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        drinks = Drink.objects.filter(status=True)
+        context['drinks'] = drinks
+        return context
+
+    def post(self, request):
+        drink_id = self.request.POST['drink_id']
+        delete_drink = Drink.objects.get(id=drink_id)
+        delete_drink.status = False
+        delete_drink.save()
+        return redirect('delete')
+    
+
+class ReviveView(generic.TemplateView):
+    template_name = "ordersite/revival.html"
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        delete_drinks = Drink.objects.filter(status=False)
+        context['drinks'] = delete_drinks
+        return context
+
+    def post(self, request):
+        drink_id = self.request.POST['drink_id']
+        delete_drink = Drink.objects.get(id=drink_id)
+        delete_drink.status = True
+        delete_drink.save()
+        return redirect('revival')
 
 
     

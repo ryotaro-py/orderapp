@@ -1,7 +1,12 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{%  block extra_style %}
+<link rel="stylesheet" href="{% static 'css/orderfix.css' %}">
+{% endblock %}
+
 {% block content %}
+<h3>注文確定画面</h3>
 {% for i in order_list %}
     {{i.0}} {{i.1}}
 {% endfor %}

@@ -1,6 +1,11 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
-
+{% block extra_style %}
+<link rel="stylesheet" href="{% static 'css/datapricedetail.css' %}">
+{% endblock %}
+{% block header %}
+    <div>金額データ詳細/{{drink.name}}</div>        
+{% endblock %}
 {% block content %}
 <h1>{{drink.name}}</h1>
 <img src="data:img/png;base64, {{chart|safe}}">

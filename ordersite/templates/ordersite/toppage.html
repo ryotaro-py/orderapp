@@ -3,12 +3,15 @@
 {% block extra_style %}
 <link rel="stylesheet" href="{% static 'css/toppage.css' %}">
 {% endblock %}
+{% block header %}
+    <div>発注サイト</div>
+{% endblock %}
 {% block content %}
 <div>
-    <a href="{% url 'order' %}">発注</a>
-    <a href="{% url 'data' %}">集計データ</a>
-    <a href="{% url 'todayorder' %}">今日の発注</a>
-    <a href="{% url 'register' %}">マスター登録</a>
+    <button type="button"><a href="{% url 'order' %}">発注</a></button>
+    <button type="button"><a href="{% url 'data' %}">集計データ</a></button>
+    <button type="button"><a href="{% url 'todayorder' %}">今日の発注</a></button>
+    <button type="button"><a href="{% url 'register' %}">マスター登録</a></button>
 </div>
 {% endblock %}
 {% block footer %}

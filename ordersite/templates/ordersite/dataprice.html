@@ -1,8 +1,9 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
-
+{% block header %}
+    <div>金額データ</div>
+{% endblock %}
 {% block content %}
-<h1>個別データ</h1>
 <ul>   
     {% for drink in object_list %}
         <li><a href="{% url 'datapricedetail' drink.id %}">{{drink.name}}</a></li>

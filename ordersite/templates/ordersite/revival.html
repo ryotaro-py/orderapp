@@ -1,0 +1,18 @@
+{% extends "ordersite/base.html" %}
+{% load static %}
+
+{% block content %}
+    {% if drinks %}
+        {% for drink in drinks %}
+            {{drink.name}}
+            <form method="post">
+                {% csrf_token %}
+                <button><input type="hidden" value="{{drink.id}}" name="drink_id">戻す</button>
+            </form>
+            <br>
+        {% endfor %}
+    {% else %}
+        <h3>存在しません</h3>
+    {% endif %}
+    <button><a href="{% url 'delete' %}">前のページに戻る</a></button>
+{% endblock %}
