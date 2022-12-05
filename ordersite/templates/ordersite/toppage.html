@@ -1,18 +1,30 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
+
 {% block extra_style %}
 <link rel="stylesheet" href="{% static 'css/toppage.css' %}">
 {% endblock %}
+
 {% block header %}
-    <div>発注サイト</div>
+発注サイト
 {% endblock %}
+
 {% block content %}
-<div>
-    <button type="button"><a href="{% url 'order' %}">発注</a></button>
-    <button type="button"><a href="{% url 'data' %}">集計データ</a></button>
-    <button type="button"><a href="{% url 'todayorder' %}">今日の発注</a></button>
-    <button type="button"><a href="{% url 'register' %}">マスター登録</a></button>
-</div>
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'order' %}">発注</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'data' %}">集計データ</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'todayorder' %}">今日の発注</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'register' %}">マスター登録</a>
+    </li>
+</ul>
+
 {% endblock %}
 {% block footer %}
 {% endblock %}

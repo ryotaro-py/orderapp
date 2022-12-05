@@ -1,18 +1,24 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{% block header %}
+削除取り消し
+{% endblock %}
+
 {% block content %}
-    {% if drinks %}
-        {% for drink in drinks %}
-            {{drink.name}}
-            <form method="post">
-                {% csrf_token %}
-                <button><input type="hidden" value="{{drink.id}}" name="drink_id">戻す</button>
-            </form>
-            <br>
-        {% endfor %}
-    {% else %}
+<ul class="list-group ">   
+    {% for drink in drinks %}
+    <li class="list-group-item">
+        {{drink.name}}
+        <form method="post">
+            {% csrf_token %}
+            <button><input type="hidden" value="{{drink.id}}" name="drink_id">戻す</button>
+        </form>
+        <br>
+    </li>
+</ul>
+    {% empty %}
         <h3>存在しません</h3>
-    {% endif %}
+    {% endfor %}
     <button><a href="{% url 'delete' %}">前のページに戻る</a></button>
 {% endblock %}

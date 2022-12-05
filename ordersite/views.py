@@ -171,7 +171,6 @@ class TodayOrderView(generic.TemplateView):
                 if count != 0:
                     today_drink_list.append([drink, count])
         context['list'] = today_drink_list
-        print(today_drink_list)
         return context
 
 class RegisterDeleteView(generic.FormView):

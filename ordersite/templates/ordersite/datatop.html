@@ -1,11 +1,17 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
+
 {% block header %}
-    <div>データページ</div>
+データページ
 {% endblock %}
+
 {% block content %}
-<div>
-    <button type="button"><a href="{% url 'dataamount' %}">個別</a></button>   
-    <button type="button"><a href="{% url 'dataprice' %}">金額</a></button>
-</div>
+<ul class="nav justify-content-center">
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'dataamount' %}">個別</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" href="{% url 'dataprice' %}">金額</a>
+    </li>
+</ul>
 {% endblock %}

@@ -1,24 +1,40 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
+
 {% block header %}
-    <div>金額データ</div>
+金額データ
 {% endblock %}
+
 {% block content %}
-<ul>   
+<ul class="list-group">   
     {% for drink in object_list %}
-        <li><a href="{% url 'datapricedetail' drink.id %}">{{drink.name}}</a></li>
+        <li class="list-group-item">
+            <a href="{% url 'datapricedetail' drink.id %}">
+                {{drink.name}}
+            </a>
+        </li>
     {% empty %}
-        <li>No articles yet.</li>
+        データが存在しません。
     {% endfor %}
 </ul>
 
-{% if page_obj.has_previous %}
-    <h2><a href="?page={{ page_obj.previous_page_number }}">前へ</a></h2>
-{% endif %}
-{% if page_obj.has_next %}
-    <h2><a href="?page={{ page_obj.paginator.num_pages}}">次へ</a></h2>
-{% endif %}    
-
-<h2><a href="{% url 'data' %}">前のページに戻る</a></h2>
+<nav aria-label="Page navigation example">
+    <ul class="pagination position-absolute bottom-0 start-50 translate-middle-x">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}">
+                Previous
+            </a>
+        </li>
+        {% endif %}
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages}}">
+                Next
+            </a>
+        </li>
+        {% endif %}  
+    </ul>
+</nav>
 
 {% endblock %}

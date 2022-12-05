@@ -1,6 +1,10 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{% block header %}
+登録完了ページ
+{% endblock %}
+
 {% block content %}
-<h2>{{drink.name}}を{{drink.price}}で登録しました。</h2>
+<h4 class="text-center">{{drink.name}}を{{drink.price}}で登録しました。</h4>
 {% endblock %}

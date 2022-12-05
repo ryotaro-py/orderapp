@@ -5,9 +5,77 @@
 <link rel="stylesheet" href="{% static 'css/order.css' %}">
 {% endblock %}
 
+{% block header %}
+発注ページ
+{% endblock %}
+
 {% block content %}
-<h3>注文画面</h3>
-<div>
+
+
+<div class="container px-4">
+    <div class="row gx-5">
+        <div class="col">
+            <div class="p-3 border bg-light">
+                <div class="card-header">
+                    商品/個数
+                </div>
+                <form method="post" action="{% url 'orderfix'%}">
+                {% csrf_token %}
+                    {% for drink in drinks %}
+                    <ul class="list-group list-group-horizontal-lg">
+                        <li class="list-group-item">
+                            {{drink.name}}
+                        </li>
+                        <li class="list-group-item">
+                            <input type="number" value="0" name="drink_count">
+                            <input type="hidden" value="{{drink.id}}" name="drink_id">
+                        </li>
+                    </ul>
+                    {% endfor %}
+                    <button type="submit">確定</button>
+                </form>
+            </div>
+        </div>
+        <div class="col">
+            <div class="p-3 border bg-light">
+                <h5>発注予測</h5>
+                {% for list in drink_to_order %}
+                    {{list.0.name}}
+                前回の注文
+                    {{list.1.created_at}}
+                <br>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+  </div>
+
+
+
+<!-- <div class="card" style="width:25rem;">
+    <div class="card-header">
+      商品/個数
+    </div>
+    <form method="post" action="{% url 'orderfix'%}">
+        {% csrf_token %}
+        {% for drink in drinks %}
+            <ul class="list-group list-group-horizontal-lg">
+                <li class="list-group-item">
+                    {{drink.name}}
+                </li>
+                <li class="list-group-item">
+                    <input type="number" value="0" name="drink_count">
+                    <input type="hidden" value="{{drink.id}}" name="drink_id">
+                </li>
+            </ul>
+        {% endfor %}
+        <button type="submit">確定</button>
+    </form>
+</div> -->
+
+
+
+<!-- <div>
     <form method="post" action="{% url 'orderfix'%}">
     {% csrf_token %}
         {% for drink in drinks %}
@@ -18,8 +86,8 @@
         {% endfor %}
         <button type="submit">確定</button>
     </form>
-</div>
-<div>
+</div> -->
+<!-- <div>
     <h2>予測</h2>
     {% for list in drink_to_order %}
         {{list.0.name}}
@@ -27,5 +95,5 @@
         {{list.1.created_at}}
         <br>
     {% endfor %}
-</div>
+</div> -->
 {% endblock %}

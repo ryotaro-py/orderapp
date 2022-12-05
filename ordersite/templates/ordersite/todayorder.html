@@ -5,15 +5,24 @@
 <link rel="stylesheet" href="{% static 'css/todayorder.css' %}">
 {% endblock %}
 
+{% block header %}
+本日の発注
+{% endblock %}
+
 {% block content %}
-今日の発注は
-<ul>
-{% for l in list %}
-    <li>
-        {{l.0.name}}
-        {{l.1}}
+
+<ul class="list-group">
+    {% for l in list %}
+    <li class="list-group-item py-3">
+        <div class="text-center">
+            {{l.0.name}} {{l.1}}
+        </div>
     </li>
-{% endfor %}
+    {% empty %}
+    <div class="text-center">
+        本日の発注はありません。
+    </div>
+    {% endfor %}
 </ul>
-です。
+
 {% endblock %}

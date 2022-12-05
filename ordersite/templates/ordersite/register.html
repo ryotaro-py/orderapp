@@ -1,13 +1,22 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{% block header %}
+登録ページ
+{% endblock %}
+
 {% block content %}
-<h1>Drink登録</h1>
-<form method="post">
-    {% csrf_token %}
-    {{form.as_p}}
-    <input type="hidden" value="{{drink_id}}" name="drink_id">
-    <button>確定</button>
-    <button type="button"><a href="{% url 'delete' %}">削除ページ</a></button>
-</form>
+<div class="position-absolute top-50 start-50 translate-middle">
+    <h1>Drink登録</h1>
+    <br>
+    <div class="mb-3">
+        <form method="post">
+            {% csrf_token %}
+            {{form.as_p}}
+            <input type="hidden" value="{{drink_id}}" name="drink_id">
+            <button class="btn btn-outline-secondary">確定</button>
+        </form>
+    </div>
+</div>
+<a class="btn btn-outline-secondary position-absolute top-10 end-0 w-25 p-3" href="{% url 'delete' %}" role="button">削除ページ</a>
 {% endblock %}

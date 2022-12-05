@@ -5,10 +5,18 @@
 <link rel="stylesheet" href="{% static 'css/orderfix.css' %}">
 {% endblock %}
 
+{% block header %}
+発注確定画面
+{% endblock %}
+
 {% block content %}
-<h3>注文確定画面</h3>
+<ul class="list-group list-group-horizontal-lg">
 {% for i in order_list %}
-    {{i.0}} {{i.1}}
+    <li class="list-group-item">
+        {{i.0}} 
+        {{i.1}}
+    </li>
 {% endfor %}
+</ul>
 注文を確定しました。
 {% endblock %}

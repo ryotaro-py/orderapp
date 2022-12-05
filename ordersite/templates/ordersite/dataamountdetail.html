@@ -1,8 +1,16 @@
 {% extends "ordersite/base.html" %}
 {% load static %}
 
+{% block header %}
+個数データ詳細/{{drink.name}}
+{% endblock %}
+
 {% block content %}
-<h1>{{drink.name}}</h1>
-<img src="data:img/png;base64, {{chart|safe}}">
-<h2><a href="{% url 'dataamount' %}">drink選択に戻る</a></h2>
+<a class="btn btn-outline-secondary position-absolute top-10 end-0 w-25 p-3" href="{% url 'dataprice' %}" role="button">
+    drink選択に戻る
+</a>
+<h3 class="text-center pt-2">
+    {{drink.name}}
+</h3>
+<img  class="position-absolute bottom-0 start-50 translate-middle-x" src="data:img/png;base64, {{chart|safe}}">
 {% endblock %}
