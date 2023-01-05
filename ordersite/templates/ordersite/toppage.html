@@ -10,21 +10,16 @@
 {% endblock %}
 
 {% block content %}
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'order' %}">発注</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'data' %}">集計データ</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'todayorder' %}">今日の発注</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'register' %}">マスター登録</a>
-    </li>
-</ul>
-
+<div class="toppage-card">
+    <div class="toppage-container">
+        <a class="toppage-item" href="{% url 'order' %}">発注</a>
+        <a class="toppage-item" href="{% url 'data' %}">集計データ</a>
+    </div>
+    <div class="toppage-container">
+        <a class="toppage-item" href="{% url 'todayorder' %}">今日の発注</a>
+        <a class="toppage-item" href="{% url 'register' %}">マスター登録</a>
+    </div>
+</div>
 {% endblock %}
 {% block footer %}
 {% endblock %}
