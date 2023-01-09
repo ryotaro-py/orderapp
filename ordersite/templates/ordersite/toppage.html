@@ -10,14 +10,16 @@
 {% endblock %}
 
 {% block content %}
-<div class="toppage-card">
-    <div class="toppage-container">
-        <a class="toppage-item" href="{% url 'order' %}">発注</a>
-        <a class="toppage-item" href="{% url 'data' %}">集計データ</a>
-    </div>
-    <div class="toppage-container">
-        <a class="toppage-item" href="{% url 'todayorder' %}">今日の発注</a>
-        <a class="toppage-item" href="{% url 'register' %}">マスター登録</a>
+<div class="container toppage-container">
+    <div class="row toppage-row">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 toppage-col" href="{% url 'order' %}">発注</a>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 toppage-col" href="{% url 'data' %}">集計データ</a>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 toppage-col" href="{% url 'todayorder' %}">今日の発注</a>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 toppage-col" href="{% url 'register' %}">マスター登録</a>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
     </div>
 </div>
 {% endblock %}

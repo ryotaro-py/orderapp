@@ -1,24 +1,14 @@
-/* .card {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
-    grid-auto-rows: 100px;
-}
-
-.container {} */
-
-.toppage-card {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-around;
-}
-
 .toppage-container {
+    height: 20em;
     display: flex;
-    justify-content: space-around;
     align-items: center;
+    justify-content: center;
 }
 
-.toppage-item {
-    font-size: xx-large;
+.toppage-row {
+    margin: 100px;
+}
+
+.toppage-col {
+    font-size: large;
 }

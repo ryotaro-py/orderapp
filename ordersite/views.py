@@ -15,10 +15,8 @@ class OrderView(generic.TemplateView):
 
     def get_context_data(self):
         context = super().get_context_data()
-        # order一覧
         drinks = Drink.objects.filter(status=True)
         context["drinks"] = drinks
-        # 予測機能について
         weight = 0.5
         JST = timezone(timedelta(hours=9), "JST")
         drink_to_order_list = []

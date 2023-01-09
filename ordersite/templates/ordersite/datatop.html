@@ -6,12 +6,12 @@
 {% endblock %}
 
 {% block content %}
-<ul class="nav justify-content-center">
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'dataamount' %}">個別</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{% url 'dataprice' %}">金額</a>
-    </li>
-</ul>
+<div class="container datatop-container">
+    <div class="row datatop-row">
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 datatop-col" href="{% url 'dataamount' %}">個別</a>
+        <a class="col-lg-3 col-md-3 col-sm-12 col-xs-12 datatop-col" href="{% url 'dataprice' %}">金額</a>
+        <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12"></div>
+    </div>
+</div>
 {% endblock %}

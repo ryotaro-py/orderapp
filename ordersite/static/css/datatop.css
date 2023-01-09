@@ -1,0 +1,14 @@
+.datatop-container {
+    height: 20em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.datatop-row {
+    margin: 100px;
+}
+
+.datatop-col {
+    font-size: large;
+}

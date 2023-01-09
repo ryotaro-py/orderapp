@@ -1,12 +1,17 @@
 from cProfile import label
 from dataclasses import field
 from django import forms
-from .models import Drink, Detail
+from .models import Drink
+
 
 class DrinkForm(forms.ModelForm):
-
     class Meta:
         model = Drink
-        fields = ("name","price",)
-        labels ={"name":"名前", "price":"金額",}
-
+        fields = (
+            "name",
+            "price",
+        )
+        labels = {
+            "name": "名前",
+            "price": "金額",
+        }
