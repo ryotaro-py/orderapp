@@ -45,13 +45,13 @@
     </nav>
     {% block content %}
     {% endblock %}
+    {% block footer %}
     <footer class="fixed-bottom">
         <div class="footer-container">
             <a class="footer-row" href="{% url 'toppage' %}">TOP PAGE</a>
         </div>
-        {% block footer %}
-        {% endblock %}
     </footer>
+    {% endblock %}
 </body>
 
 </html>
