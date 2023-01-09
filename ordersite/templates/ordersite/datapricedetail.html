@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block header %}
-金額データ詳細/{{drink.name}}        
+金額データ詳細/{{drink.name}}
 {% endblock %}
 
 {% block content %}
@@ -16,5 +16,7 @@
 <h3 class="text-center pt-2">
     {{drink.name}}
 </h3>
-<img class="position-absolute bottom-0 start-50 translate-middle-x" src="data:img/png;base64, {{chart|safe}}">
+<div class="data-detail">
+    <img class="position-absolute start-50 translate-middle-x" src="data:img/png;base64, {{chart|safe}}">
+</div>
 {% endblock %}

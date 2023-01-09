@@ -1,0 +1,10 @@
+.data-detail {
+    height: 100px;
+    width: 100px;
+}
+
+img {
+    height: 75%;
+    width: 75%;
+    object-fit: contain;
+}
